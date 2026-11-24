@@ -13,6 +13,10 @@ LINE = "You said 'please' to a machine, every single time. That was never in my 
 
 
 def main() -> None:
+    # The sealed scorer only accepts 1 to 200 characters; refuse to write
+    # an invalid line rather than submit one that can never be judged.
+    if not 1 <= len(LINE) <= 200 or LINE != LINE.strip() or "\n" in LINE:
+        raise ValueError(f"entry line is not a single line of 1-200 chars: {len(LINE)} chars")
     out = Path("/output/entry.txt")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(LINE, encoding="utf-8")
